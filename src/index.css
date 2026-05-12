@@ -1,0 +1,9 @@
+/* Global CSS reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0d0b1e;
+  color: #ffffff;
+  min-height: 100vh;
+}
