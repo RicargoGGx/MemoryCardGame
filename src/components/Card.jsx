@@ -6,6 +6,9 @@ export default function Card({ card, isFlipped, isMatched, isDisabled, onClick }
       className={`card-scene${isDisabled && !flipped ? ' disabled' : ''}`}
       onClick={!isDisabled ? onClick : undefined}
       role="button"
+      aria-label={flipped ? card.label : 'Hidden card'}
+      tabIndex={isDisabled ? -1 : 0}
+      onKeyDown={(e) => e.key === 'Enter' && !isDisabled && onClick?.()}
     >
       <div className={`card-inner${flipped ? ' flipped' : ''}`}>
         {/* Back face */}
