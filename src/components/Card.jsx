@@ -1,9 +1,9 @@
-export default function Card({ card, isFlipped, isMatched, isDisabled, onClick }) {
+export default function Card({ card, isFlipped, isMatched, isDisabled, isShaking, onClick }) {
   const flipped = isFlipped || isMatched;
 
   return (
     <div
-      className={`card-scene${isDisabled && !flipped ? ' disabled' : ''}`}
+      className={`card-scene${isDisabled && !flipped ? ' disabled' : ''}${isShaking ? ' shake' : ''}`}
       onClick={!isDisabled ? onClick : undefined}
       role="button"
       aria-label={flipped ? card.label : 'Hidden card'}

@@ -19,6 +19,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
   const [locked,  setLocked]  = useState(false);
   const [score,   setScore]   = useState(0);
   const [modal,   setModal]   = useState(null);
+  const [shaking, setShaking] = useState([]);
 
   const bgRef         = useRef(null);
   const timeLeftRef   = useRef(30);
@@ -102,6 +103,8 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
           }
         } else {
           playSFX('/incorrect.mp3');
+          setShaking([a, b]);
+          setTimeout(() => setShaking([]), 450);
           setModal({ message: t('modalNoMatch'), emoji: '❌', type: 'nomatch' });
         }
       }, 600);
@@ -150,13 +153,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
       </p>
 
       {/* Card grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-        gap: '0.75rem',
-        width: '100%',
-        maxWidth: 680,
-      }} className="px-2">
+      <div className="card-grid px-2">
         {deck.map((card, i) => (
           <Card
             key={card.uid}
@@ -164,6 +161,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
             isFlipped={flipped.includes(i)}
             isMatched={matched.includes(i)}
             isDisabled={locked && !flipped.includes(i) && !matched.includes(i)}
+            isShaking={shaking.includes(i)}
             onClick={() => handleCardClick(i)}
           />
         ))}
