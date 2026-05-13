@@ -6,7 +6,7 @@ export default function Card({ card, isFlipped, isMatched, isDisabled, isShaking
       className={`card-scene${isDisabled && !flipped ? ' disabled' : ''}${isShaking ? ' shake' : ''}`}
       onClick={!isDisabled ? onClick : undefined}
       role="button"
-      aria-label={flipped ? card.label : 'Hidden card'}
+      aria-label={isMatched ? `${card.label}, matched` : flipped ? card.label : 'Hidden card'}
       tabIndex={isDisabled ? -1 : 0}
       onKeyDown={(e) => e.key === 'Enter' && !isDisabled && onClick?.()}
     >

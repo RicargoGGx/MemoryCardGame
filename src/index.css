@@ -228,3 +228,9 @@ body {
 }
 .settings-btn:hover { filter: brightness(1.15); }
 select.settings-btn { background: var(--surface); color: var(--text); }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-inner { transition: none; }
+  .btn-bounce:hover .btn-bounce-visual { animation: none; }
+  .card-scene.shake { animation: none; }
+}
