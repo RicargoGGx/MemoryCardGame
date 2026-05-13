@@ -207,10 +207,13 @@ body {
   border: 1px solid var(--border);
   color: var(--text);
   border-radius: 20px;
-  padding: 0.5rem 1.1rem;
+  padding: 0.35rem 0.75rem;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 700;
   transition: filter 0.15s;
+}
+@media (min-width: 500px) {
+  .settings-btn { padding: 0.5rem 1.1rem; font-size: 1rem; }
 }
 .settings-btn:hover { filter: brightness(1.15); }
