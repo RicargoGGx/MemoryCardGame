@@ -5,11 +5,13 @@ import MuteButton from '../components/MuteButton';
 import { buildDeck } from '../utils';
 import { useTimer } from '../hooks/useTimer';
 import { playSFX } from '../hooks/useSound';
+import { useApp } from '../context/AppContext';
 
 const TOTAL_PAIRS = 4;
 const scoreForMatch = (timeLeft) => 50 + timeLeft * 5;
 
 export default function GameScreen({ onWin, onLose, onMainMenu }) {
+  const { t } = useApp();
   const [muted,   setMuted]   = useState(true);
   const [deck]                = useState(() => buildDeck());
   const [flipped, setFlipped] = useState([]);
@@ -20,7 +22,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
 
   const bgRef         = useRef(null);
   const timeLeftRef   = useRef(30);
-  const scoreRef      = useRef(0);
+  const scoreRef      = useRef(0);        // always-current score for callbacks
   const tickingPlayed = useRef(false);
 
   // ── Background music (only this respects mute) ──
@@ -47,7 +49,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
       timeLeftRef.current = tick;
       if (tick <= 10 && !tickingPlayed.current) {
         tickingPlayed.current = true;
-        playSFX('/ticking.mp3');
+        playSFX('/ticking.mp3');  // always plays, ignores mute
       }
     },
     onExpire: () => {
@@ -57,10 +59,10 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
   });
   useEffect(() => { startTimer(); }, []); // eslint-disable-line
 
-  const timerDanger = timeLeft <= 10;
-
+  // ── Dismiss modal ──
   const dismissModal = useCallback(() => {
     if (!modal) return;
+    if (modal.type === 'win') return;
     if (modal.type === 'nomatch') {
       setFlipped([]);
       setLocked(false);
@@ -68,9 +70,11 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
     setModal(null);
   }, [modal]);
 
+  // ── Card click ──
   const handleCardClick = useCallback((index) => {
     if (locked) return;
-    if (flipped.includes(index) || matched.includes(index)) return;
+    if (flipped.includes(index)) return;
+    if (matched.includes(index)) return;
 
     const next = [...flipped, index];
     setFlipped(next);
@@ -86,7 +90,6 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
           const pts = scoreForMatch(timeLeftRef.current);
           scoreRef.current += pts;
           setScore(scoreRef.current);
-
           const newMatched = [...matched, a, b];
           setMatched(newMatched);
           setFlipped([]);
@@ -94,22 +97,27 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
 
           if (newMatched.length === TOTAL_PAIRS * 2) {
             bgRef.current?.pause();
-            setModal({ message: "Nice! It's a match! 🎉", emoji: '✅', type: 'win' });
+            setModal({ message: t('modalMatch'), emoji: '✅', type: 'win' });
             setTimeout(() => { setModal(null); onWin(scoreRef.current); }, 1400);
           } else {
-            setModal({ message: "Nice! It's a match! 🎉", emoji: '✅', type: 'match' });
+            setModal({ message: t('modalMatch'), emoji: '✅', type: 'match' });
           }
         } else {
           playSFX('/incorrect.mp3');
-          setModal({ message: 'Sorry, not a match 😢', emoji: '❌', type: 'nomatch' });
+          setModal({ message: t('modalNoMatch'), emoji: '❌', type: 'nomatch' });
         }
       }, 600);
     }
-  }, [locked, flipped, matched, deck, onWin]);
+  }, [locked, flipped, matched, deck, onWin, t]); // eslint-disable-line
+
+  const timerDanger = timeLeft <= 10;
 
   return (
     <div className="screen" style={{ padding: '1rem', gap: '1.2rem' }}>
+
+      {/* ── Top bar ── */}
       <div className="topbar">
+        {/* Exit button */}
         <button
           onClick={handleExit}
           style={{
@@ -123,19 +131,27 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
             fontWeight: 600,
           }}
         >
-          ← Exit
+          ← {t('exitBtn')}
         </button>
-        <span style={{ fontWeight: 700, fontSize: '1rem', color: '#fbbf24' }}>
+
+        {/* Score */}
+        <span style={{ fontWeight: 700, fontSize: '1rem', color: '#fbbf24', letterSpacing: 1 }}>
           ⭐ {score} pts
         </span>
+
+        {/* Timer */}
         <span className={`timer${timerDanger ? ' danger' : ''}`}>{timeLeft}s</span>
+
+        {/* Mute (BG music only) */}
         <MuteButton muted={muted} onToggle={() => setMuted((m) => !m)} />
       </div>
 
+      {/* Progress */}
       <p style={{ marginTop: '3.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-        Matches: {matched.length / 2} / {TOTAL_PAIRS}
+        {t('matchesLabel')}: {matched.length / 2} / {TOTAL_PAIRS}
       </p>
 
+      {/* Card grid */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(4, 1fr)',
@@ -155,6 +171,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
         ))}
       </div>
 
+      {/* Feedback modal */}
       {modal && (
         <FeedbackModal
           message={modal.message}
