@@ -1,4 +1,4 @@
-import { Trophy, Frown, Star } from 'lucide-react';
+import { Trophy, Frown, Star, RotateCcw, Home } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export default function ResultScreen({ won, score, onPlayAgain, onMainMenu }) {
@@ -55,9 +55,10 @@ export default function ResultScreen({ won, score, onPlayAgain, onMainMenu }) {
             padding: '0.7rem 2.5rem', borderRadius: 50,
             letterSpacing: 1, boxShadow: '0 4px 24px rgba(99,102,241,0.45)',
             cursor: 'pointer', minWidth: 200,
+            display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center',
           }}
         >
-          {t('playAgain')}
+          <RotateCcw size={18} /> {t('playAgain')}
         </button>
         <button
           className="btn btn-bounce"
@@ -69,9 +70,10 @@ export default function ResultScreen({ won, score, onPlayAgain, onMainMenu }) {
             fontSize: '1rem', fontWeight: 600,
             padding: '0.65rem 2.5rem', borderRadius: 50,
             cursor: 'pointer', minWidth: 200,
+            display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center',
           }}
         >
-          {t('mainMenu')}
+          <Home size={18} /> {t('mainMenu')}
         </button>
       </div>
     </div>

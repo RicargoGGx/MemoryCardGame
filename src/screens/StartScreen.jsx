@@ -1,4 +1,4 @@
-import { Globe, Sun, Moon } from 'lucide-react';
+import { Globe, Sun, Moon, Play } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export default function StartScreen({ onStart }) {
@@ -59,9 +59,10 @@ export default function StartScreen({ onStart }) {
             letterSpacing: 1,
             boxShadow: '0 4px 24px rgba(99,102,241,0.45)',
             cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: 8,
           }}
         >
-          {t('startBtn')}
+          <Play size={18} fill="#fff" /> {t('startBtn')}
         </button>
       </div>
     </div>
