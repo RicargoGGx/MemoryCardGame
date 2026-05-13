@@ -44,36 +44,42 @@ export default function ResultScreen({ won, score, onPlayAgain, onMainMenu }) {
       </div>
 
       {/* Buttons */}
-      <div className="slide-up" style={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+      <div className="slide-up" style={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
         <button
-          className="btn btn-bounce"
+          className="btn-bounce"
           onClick={onPlayAgain}
-          style={{
-            background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
-            border: 'none', color: '#fff',
-            fontSize: '1.1rem', fontWeight: 700,
-            padding: '0.7rem 2.5rem', borderRadius: 50,
-            letterSpacing: 1, boxShadow: '0 4px 24px rgba(99,102,241,0.45)',
-            cursor: 'pointer', minWidth: 200,
-            display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center',
-          }}
         >
-          <RotateCcw size={18} /> {t('playAgain')}
+          <span
+            className="btn-bounce-visual"
+            style={{
+              background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
+              border: 'none', color: '#fff',
+              fontSize: '1.1rem', fontWeight: 700,
+              padding: '0.7rem 2.5rem', borderRadius: 50,
+              letterSpacing: 1, boxShadow: '0 4px 24px rgba(99,102,241,0.45)',
+              minWidth: 200,
+            }}
+          >
+            <RotateCcw size={18} /> {t('playAgain')}
+          </span>
         </button>
         <button
-          className="btn btn-bounce"
+          className="btn-bounce"
           onClick={onMainMenu}
-          style={{
-            background: 'transparent',
-            border: '2px solid var(--border)',
-            color: 'var(--text)',
-            fontSize: '1rem', fontWeight: 600,
-            padding: '0.65rem 2.5rem', borderRadius: 50,
-            cursor: 'pointer', minWidth: 200,
-            display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center',
-          }}
         >
-          <Home size={18} /> {t('mainMenu')}
+          <span
+            className="btn-bounce-visual"
+            style={{
+              background: 'transparent',
+              border: '2px solid var(--border)',
+              color: 'var(--text)',
+              fontSize: '1rem', fontWeight: 600,
+              padding: '0.65rem 2.5rem', borderRadius: 50,
+              minWidth: 200,
+            }}
+          >
+            <Home size={18} /> {t('mainMenu')}
+          </span>
         </button>
       </div>
     </div>

@@ -143,15 +143,19 @@ body {
 
 .btn-bounce {
   position: relative;
-  transition: transform 0.15s ease;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
-.btn-bounce::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  bottom: -14px;
+.btn-bounce-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: none;
 }
-.btn-bounce:hover {
+.btn-bounce:hover .btn-bounce-visual {
   animation: bounce 0.65s ease-in-out infinite;
 }
 

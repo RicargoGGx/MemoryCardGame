@@ -49,20 +49,22 @@ export default function StartScreen({ onStart }) {
       {/* Start button – slides in from bottom */}
       <div className="slide-up" style={{ zIndex: 1 }}>
         <button
-          className="btn btn-bounce"
+          className="btn-bounce"
           onClick={onStart}
-          style={{
-            background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
-            border: 'none', color: '#fff',
-            fontSize: '1.15rem', fontWeight: 700,
-            padding: '0.75rem 2.8rem', borderRadius: 50,
-            letterSpacing: 1,
-            boxShadow: '0 4px 24px rgba(99,102,241,0.45)',
-            cursor: 'pointer',
-            display: 'flex', alignItems: 'center', gap: 8,
-          }}
         >
-          <Play size={18} fill="#fff" /> {t('startBtn')}
+          <span
+            className="btn-bounce-visual"
+            style={{
+              background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
+              color: '#fff',
+              fontSize: '1.15rem', fontWeight: 700,
+              padding: '0.75rem 2.8rem', borderRadius: 50,
+              letterSpacing: 1,
+              boxShadow: '0 4px 24px rgba(99,102,241,0.45)',
+            }}
+          >
+            <Play size={18} fill="#fff" /> {t('startBtn')}
+          </span>
         </button>
       </div>
     </div>
