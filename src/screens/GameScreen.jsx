@@ -1,7 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Card from '../components/Card';
 import FeedbackModal from '../components/FeedbackModal';
 import { buildDeck } from '../utils';
+import { useTimer } from '../hooks/useTimer';
 
 const TOTAL_PAIRS = 4;
 
@@ -11,6 +12,16 @@ export default function GameScreen({ onWin, onLose }) {
   const [matched, setMatched] = useState([]);
   const [locked,  setLocked]  = useState(false);
   const [modal,   setModal]   = useState(null);
+
+  const timeLeftRef = useRef(30);
+
+  const { timeLeft, start: startTimer } = useTimer(30, {
+    onTick: (tick) => { timeLeftRef.current = tick; },
+    onExpire: () => { onLose(0); },
+  });
+  useEffect(() => { startTimer(); }, []); // eslint-disable-line
+
+  const timerDanger = timeLeft <= 10;
 
   const dismissModal = useCallback(() => {
     if (!modal) return;
@@ -55,7 +66,11 @@ export default function GameScreen({ onWin, onLose }) {
 
   return (
     <div className="screen" style={{ padding: '1rem', gap: '1.2rem' }}>
-      <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+      <div className="topbar">
+        <span className={`timer${timerDanger ? ' danger' : ''}`}>{timeLeft}s</span>
+      </div>
+
+      <p style={{ marginTop: '3.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
         Matches: {matched.length / 2} / {TOTAL_PAIRS}
       </p>
 
