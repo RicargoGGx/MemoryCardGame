@@ -5,19 +5,22 @@ import { buildDeck } from '../utils';
 import { useTimer } from '../hooks/useTimer';
 
 const TOTAL_PAIRS = 4;
+const scoreForMatch = (timeLeft) => 50 + timeLeft * 5;
 
 export default function GameScreen({ onWin, onLose }) {
   const [deck]                = useState(() => buildDeck());
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
   const [locked,  setLocked]  = useState(false);
+  const [score,   setScore]   = useState(0);
   const [modal,   setModal]   = useState(null);
 
   const timeLeftRef = useRef(30);
+  const scoreRef    = useRef(0);
 
   const { timeLeft, start: startTimer } = useTimer(30, {
     onTick: (tick) => { timeLeftRef.current = tick; },
-    onExpire: () => { onLose(0); },
+    onExpire: () => { onLose(scoreRef.current); },
   });
   useEffect(() => { startTimer(); }, []); // eslint-disable-line
 
@@ -46,6 +49,10 @@ export default function GameScreen({ onWin, onLose }) {
 
       setTimeout(() => {
         if (isMatch) {
+          const pts = scoreForMatch(timeLeftRef.current);
+          scoreRef.current += pts;
+          setScore(scoreRef.current);
+
           const newMatched = [...matched, a, b];
           setMatched(newMatched);
           setFlipped([]);
@@ -53,7 +60,7 @@ export default function GameScreen({ onWin, onLose }) {
 
           if (newMatched.length === TOTAL_PAIRS * 2) {
             setModal({ message: "Nice! It's a match! 🎉", emoji: '✅', type: 'win' });
-            setTimeout(() => { setModal(null); onWin(0); }, 1400);
+            setTimeout(() => { setModal(null); onWin(scoreRef.current); }, 1400);
           } else {
             setModal({ message: "Nice! It's a match! 🎉", emoji: '✅', type: 'match' });
           }
@@ -67,6 +74,9 @@ export default function GameScreen({ onWin, onLose }) {
   return (
     <div className="screen" style={{ padding: '1rem', gap: '1.2rem' }}>
       <div className="topbar">
+        <span style={{ fontWeight: 700, fontSize: '1rem', color: '#fbbf24' }}>
+          ⭐ {score} pts
+        </span>
         <span className={`timer${timerDanger ? ' danger' : ''}`}>{timeLeft}s</span>
       </div>
 
