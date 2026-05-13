@@ -138,7 +138,7 @@ body {
 }
 
 /* ── Timer ── */
-.timer { font-size: 1.8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.timer { font-size: 2rem; font-weight: 800; font-variant-numeric: tabular-nums; min-width: 3ch; }
 .timer.danger { animation: timerPulse 0.6s ease infinite; }
 
 .btn-bounce {

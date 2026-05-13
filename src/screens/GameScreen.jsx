@@ -119,7 +119,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
 
       {/* ── Top bar ── */}
       <div className="topbar">
-        {/* Exit button */}
+        {/* Exit button — left */}
         <button
           onClick={handleExit}
           style={{
@@ -131,20 +131,22 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
             cursor: 'pointer',
             fontSize: '0.85rem',
             fontWeight: 600,
+            whiteSpace: 'nowrap',
+            display: 'flex', alignItems: 'center', gap: 4,
           }}
         >
-          <ArrowLeft size={15} style={{ marginRight: 4 }} />{t('exitBtn')}
+          <ArrowLeft size={15} />{t('exitBtn')}
         </button>
+
+        {/* Timer */}
+        <span className={`timer${timerDanger ? ' danger' : ''}`}>{timeLeft}s</span>
 
         {/* Score */}
         <span style={{ fontWeight: 700, fontSize: '1rem', color: '#fbbf24', letterSpacing: 1, display: 'flex', alignItems: 'center', gap: 4 }}>
           <Star size={16} fill="#fbbf24" color="#fbbf24" /> {score} pts
         </span>
 
-        {/* Timer */}
-        <span className={`timer${timerDanger ? ' danger' : ''}`}>{timeLeft}s</span>
-
-        {/* Mute (BG music only) */}
+        {/* Mute (BG music only) — right */}
         <MuteButton muted={muted} onToggle={() => setMuted((m) => !m)} />
       </div>
 
