@@ -23,7 +23,6 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
   const bgRef         = useRef(null);
   const timeLeftRef   = useRef(30);
   const scoreRef      = useRef(0);        // always-current score for callbacks
-  const tickingPlayed = useRef(false);
 
   // ── Background music (only this respects mute) ──
   useEffect(() => {
@@ -47,9 +46,8 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
   const { timeLeft, start: startTimer } = useTimer(30, {
     onTick: (tick) => {
       timeLeftRef.current = tick;
-      if (tick <= 10 && !tickingPlayed.current) {
-        tickingPlayed.current = true;
-        playSFX('/ticking.mp3');  // always plays, ignores mute
+      if (tick <= 10 && tick > 0) {
+        playSFX('/ticking.mp3');  // plays every second from 10 down to 1
       }
     },
     onExpire: () => {
