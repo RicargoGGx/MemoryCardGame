@@ -30,7 +30,7 @@ npm run build
 ## 🎮 How to Play
 
 1. Click **Start Game** on the first screen.
-2. Eight cards are laid face-down in random order (4 pairs: ⭐ Star, 🌙 Moon, ☀️ Sun, ☄️ Comet).
+2. Eight cards are laid face-down in random order (4 pairs: Star, Moon, Sun, Comet).
 3. Click a card to flip it, then click a second card:
    - **Match** → cards stay face-up, a success modal appears briefly.
    - **No match** → a failure modal appears and cards flip back.
