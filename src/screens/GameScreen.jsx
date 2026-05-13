@@ -23,6 +23,8 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
   const [shaking, setShaking] = useState([]);
 
   const bgRef         = useRef(null);
+  const tickingRef    = useRef(null);
+  const audioUnlocked = useRef(false);
   const timeLeftRef   = useRef(30);
   const scoreRef      = useRef(0);        // always-current score for callbacks
 
@@ -30,6 +32,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
   useEffect(() => {
     bgRef.current = new Audio('/background.mp3');
     bgRef.current.loop = true;
+    tickingRef.current = new Audio('/ticking.mp3');
     return () => { bgRef.current?.pause(); };
   }, []);
 
@@ -49,7 +52,10 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
     onTick: (tick) => {
       timeLeftRef.current = tick;
       if (tick <= 10 && tick > 0) {
-        playSFX('/ticking.mp3');  // plays every second from 10 down to 1
+        if (tickingRef.current) {
+          tickingRef.current.currentTime = 0;
+          tickingRef.current.play().catch(() => {});
+        }
       }
     },
     onExpire: () => {
@@ -75,6 +81,15 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
     if (locked) return;
     if (flipped.includes(index)) return;
     if (matched.includes(index)) return;
+
+    // unlock audio on first tap — needed on mobile
+    if (!audioUnlocked.current && tickingRef.current) {
+      tickingRef.current.play().then(() => {
+        tickingRef.current.pause();
+        tickingRef.current.currentTime = 0;
+      }).catch(() => {});
+      audioUnlocked.current = true;
+    }
 
     const next = [...flipped, index];
     setFlipped(next);
