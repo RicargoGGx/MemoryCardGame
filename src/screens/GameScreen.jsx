@@ -15,7 +15,6 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
   const { t } = useApp();
   const [muted,   setMuted]   = useState(true);
   const [deck]                = useState(() => buildDeck());
-  const [preview, setPreview] = useState(true);
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
   const [locked,  setLocked]  = useState(false);
@@ -64,13 +63,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
       onLose(scoreRef.current);
     },
   });
-  useEffect(() => {
-    const id = setTimeout(() => {
-      setPreview(false);
-      startTimer();
-    }, 500);
-    return () => clearTimeout(id);
-  }, []); // eslint-disable-line
+  useEffect(() => { startTimer(); }, []); // eslint-disable-line
 
   // ── Dismiss modal ──
   const dismissModal = useCallback(() => {
@@ -85,7 +78,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
 
   // ── Card click ──
   const handleCardClick = useCallback((index) => {
-    if (preview || locked) return;
+    if (locked) return;
     if (flipped.includes(index)) return;
     if (matched.includes(index)) return;
 
@@ -132,7 +125,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
         }
       }, 600);
     }
-  }, [preview, locked, flipped, matched, deck, onWin, t]); // eslint-disable-line
+  }, [locked, flipped, matched, deck, onWin, t]); // eslint-disable-line
 
   const timerDanger = timeLeft <= 10;
 
@@ -183,7 +176,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
           <Card
             key={card.uid}
             card={card}
-            isFlipped={preview || flipped.includes(i)}
+            isFlipped={flipped.includes(i)}
             isMatched={matched.includes(i)}
             isDisabled={locked && !flipped.includes(i) && !matched.includes(i)}
             isShaking={shaking.includes(i)}
