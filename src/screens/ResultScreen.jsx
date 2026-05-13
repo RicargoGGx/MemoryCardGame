@@ -1,3 +1,4 @@
+import { Trophy, Frown, Star } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export default function ResultScreen({ won, score, onPlayAgain, onMainMenu }) {
@@ -16,8 +17,10 @@ export default function ResultScreen({ won, score, onPlayAgain, onMainMenu }) {
 
       {/* Message */}
       <div className="slide-down" style={{ zIndex: 1 }}>
-        <div style={{ fontSize: 'clamp(3rem,12vw,6rem)', marginBottom: '0.5rem' }}>
-          {won ? '🏆' : '😔'}
+        <div style={{ marginBottom: '0.75rem', display: 'flex', justifyContent: 'center' }}>
+          {won
+            ? <Trophy size={80} color="#fbbf24" strokeWidth={1.5} />
+            : <Frown size={80} color="#94a3b8" strokeWidth={1.5} />}
         </div>
         <h2 style={{ fontSize: 'clamp(1.6rem,5vw,2.5rem)', fontWeight: 800, color: 'var(--text)' }}>
           {won ? t('winTitle') : t('loseTitle')}
@@ -34,8 +37,8 @@ export default function ResultScreen({ won, score, onPlayAgain, onMainMenu }) {
           <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'block', marginBottom: 2 }}>
             {t('finalScore')}
           </span>
-          <span style={{ fontSize: '2rem', fontWeight: 800, color: '#fbbf24' }}>
-            ⭐ {score} pts
+          <span style={{ fontSize: '2rem', fontWeight: 800, color: '#fbbf24', display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center' }}>
+            <Star size={28} fill="#fbbf24" color="#fbbf24" /> {score} pts
           </span>
         </div>
       </div>

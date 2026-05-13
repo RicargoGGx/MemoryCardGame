@@ -1,3 +1,4 @@
+import { Globe, Sun, Moon } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export default function StartScreen({ onStart }) {
@@ -16,11 +17,11 @@ export default function StartScreen({ onStart }) {
       <div className="settings-bar">
         <button className="settings-btn" onClick={toggleLang}
           title={lang === 'en' ? 'Switch to Spanish' : 'Cambiar a Inglés'}>
-          🌐 {lang === 'en' ? 'ES' : 'EN'}
+          <Globe size={15} style={{ marginRight: 4 }} />{lang === 'en' ? 'ES' : 'EN'}
         </button>
         <button className="settings-btn" onClick={toggleTheme}
           title={theme === 'dark' ? 'Light mode' : 'Dark mode'}>
-          {theme === 'dark' ? '☀️' : '🌙'}
+          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
         </button>
       </div>
 

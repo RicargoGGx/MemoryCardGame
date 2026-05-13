@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { ArrowLeft, Star } from 'lucide-react';
 import Card from '../components/Card';
 import FeedbackModal from '../components/FeedbackModal';
 import MuteButton from '../components/MuteButton';
@@ -96,16 +97,16 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
 
           if (newMatched.length === TOTAL_PAIRS * 2) {
             bgRef.current?.pause();
-            setModal({ message: t('modalMatch'), emoji: '✅', type: 'win' });
+            setModal({ message: t('modalMatch'), type: 'win' });
             setTimeout(() => { setModal(null); onWin(scoreRef.current); }, 1400);
           } else {
-            setModal({ message: t('modalMatch'), emoji: '✅', type: 'match' });
+            setModal({ message: t('modalMatch'), type: 'match' });
           }
         } else {
           playSFX('/incorrect.mp3');
           setShaking([a, b]);
           setTimeout(() => setShaking([]), 450);
-          setModal({ message: t('modalNoMatch'), emoji: '❌', type: 'nomatch' });
+          setModal({ message: t('modalNoMatch'), type: 'nomatch' });
         }
       }, 600);
     }
@@ -132,12 +133,12 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
             fontWeight: 600,
           }}
         >
-          ← {t('exitBtn')}
+          <ArrowLeft size={15} style={{ marginRight: 4 }} />{t('exitBtn')}
         </button>
 
         {/* Score */}
-        <span style={{ fontWeight: 700, fontSize: '1rem', color: '#fbbf24', letterSpacing: 1 }}>
-          ⭐ {score} pts
+        <span style={{ fontWeight: 700, fontSize: '1rem', color: '#fbbf24', letterSpacing: 1, display: 'flex', alignItems: 'center', gap: 4 }}>
+          <Star size={16} fill="#fbbf24" color="#fbbf24" /> {score} pts
         </span>
 
         {/* Timer */}
@@ -171,7 +172,7 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
       {modal && (
         <FeedbackModal
           message={modal.message}
-          emoji={modal.emoji}
+          type={modal.type}
           onDismiss={dismissModal}
         />
       )}
