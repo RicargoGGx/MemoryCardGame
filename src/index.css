@@ -95,6 +95,7 @@ body {
 }
 .card-back {
   background: linear-gradient(135deg,#1a2980,#26d0ce);
+  font-size: 3rem; color: #ffd700; font-weight: 900;
 }
 .card-back img {
   width: 55%; height: 55%; object-fit: contain;
