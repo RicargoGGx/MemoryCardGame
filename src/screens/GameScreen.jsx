@@ -1,13 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Card from '../components/Card';
 import FeedbackModal from '../components/FeedbackModal';
+import MuteButton from '../components/MuteButton';
 import { buildDeck } from '../utils';
 import { useTimer } from '../hooks/useTimer';
+import { playSFX } from '../hooks/useSound';
 
 const TOTAL_PAIRS = 4;
 const scoreForMatch = (timeLeft) => 50 + timeLeft * 5;
 
 export default function GameScreen({ onWin, onLose }) {
+  const [muted,   setMuted]   = useState(true);
   const [deck]                = useState(() => buildDeck());
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
@@ -15,12 +18,30 @@ export default function GameScreen({ onWin, onLose }) {
   const [score,   setScore]   = useState(0);
   const [modal,   setModal]   = useState(null);
 
+  const bgRef       = useRef(null);
   const timeLeftRef = useRef(30);
   const scoreRef    = useRef(0);
 
+  useEffect(() => {
+    bgRef.current = new Audio('/background.mp3');
+    bgRef.current.loop = true;
+    return () => { bgRef.current?.pause(); };
+  }, []);
+
+  useEffect(() => {
+    if (!muted) bgRef.current?.play().catch(() => {});
+    else        bgRef.current?.pause();
+  }, [muted]);
+
   const { timeLeft, start: startTimer } = useTimer(30, {
-    onTick: (tick) => { timeLeftRef.current = tick; },
-    onExpire: () => { onLose(scoreRef.current); },
+    onTick: (tick) => {
+      timeLeftRef.current = tick;
+      playSFX('/ticking.mp3');
+    },
+    onExpire: () => {
+      bgRef.current?.pause();
+      onLose(scoreRef.current);
+    },
   });
   useEffect(() => { startTimer(); }, []); // eslint-disable-line
 
@@ -49,6 +70,7 @@ export default function GameScreen({ onWin, onLose }) {
 
       setTimeout(() => {
         if (isMatch) {
+          playSFX('/correct.mp3');
           const pts = scoreForMatch(timeLeftRef.current);
           scoreRef.current += pts;
           setScore(scoreRef.current);
@@ -59,12 +81,14 @@ export default function GameScreen({ onWin, onLose }) {
           setLocked(false);
 
           if (newMatched.length === TOTAL_PAIRS * 2) {
+            bgRef.current?.pause();
             setModal({ message: "Nice! It's a match! 🎉", emoji: '✅', type: 'win' });
             setTimeout(() => { setModal(null); onWin(scoreRef.current); }, 1400);
           } else {
             setModal({ message: "Nice! It's a match! 🎉", emoji: '✅', type: 'match' });
           }
         } else {
+          playSFX('/incorrect.mp3');
           setModal({ message: 'Sorry, not a match 😢', emoji: '❌', type: 'nomatch' });
         }
       }, 600);
@@ -78,6 +102,7 @@ export default function GameScreen({ onWin, onLose }) {
           ⭐ {score} pts
         </span>
         <span className={`timer${timerDanger ? ' danger' : ''}`}>{timeLeft}s</span>
+        <MuteButton muted={muted} onToggle={() => setMuted((m) => !m)} />
       </div>
 
       <p style={{ marginTop: '3.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
