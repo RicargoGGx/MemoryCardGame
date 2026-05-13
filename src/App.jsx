@@ -7,17 +7,33 @@ import ResultScreen from './screens/ResultScreen';
 export default function App() {
   const [screen, setScreen] = useState('start');
   const [finalScore, setFinalScore] = useState(0);
+  const [lastScore,  setLastScore]  = useState(() => Number(localStorage.getItem('lastScore') ?? 0));
+  const [bestScore,  setBestScore]  = useState(() => Number(localStorage.getItem('bestScore') ?? 0));
+
+  const handleGameEnd = (score) => {
+    setFinalScore(score);
+    setLastScore(score);
+    localStorage.setItem('lastScore', score);
+    if (score > bestScore) {
+      setBestScore(score);
+      localStorage.setItem('bestScore', score);
+    }
+  };
 
   return (
     <AppProvider>
       {screen === 'start' && (
-        <StartScreen onStart={() => setScreen('game')} />
+        <StartScreen
+          onStart={() => setScreen('game')}
+          bestScore={bestScore}
+          lastScore={lastScore}
+        />
       )}
       {screen === 'game' && (
         <GameScreen
           key={Date.now()}
-          onWin={(score) => { setFinalScore(score); setScreen('win'); }}
-          onLose={(score) => { setFinalScore(score); setScreen('lose'); }}
+          onWin={(score) => { handleGameEnd(score); setScreen('win'); }}
+          onLose={(score) => { handleGameEnd(score); setScreen('lose'); }}
           onMainMenu={() => setScreen('start')}
         />
       )}

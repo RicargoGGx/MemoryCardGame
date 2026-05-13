@@ -1,7 +1,7 @@
-import { Globe, Sun, Moon, Play } from 'lucide-react';
+import { Globe, Sun, Moon, Play, Trophy, History } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
-export default function StartScreen({ onStart }) {
+export default function StartScreen({ onStart, bestScore, lastScore }) {
   const { t, lang, setLang, theme, toggleTheme } = useApp();
 
   return (
@@ -74,6 +74,38 @@ export default function StartScreen({ onStart }) {
             <Play size={18} fill="#fff" /> {t('startBtn')}
           </span>
         </button>
+      </div>
+
+      {/* Score stats */}
+      <div className="slide-up" style={{ zIndex: 1, display: 'flex', gap: '1.5rem' }}>
+        <div style={{
+          background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 12, padding: '0.5rem 1.2rem', textAlign: 'center', minWidth: 110,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, marginBottom: 2 }}>
+            <Trophy size={13} color="#fbbf24" />
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
+              {t('bestScore')}
+            </span>
+          </div>
+          <span style={{ fontSize: '1.3rem', fontWeight: 800, color: '#fbbf24' }}>
+            {bestScore > 0 ? bestScore : t('noScore')}
+          </span>
+        </div>
+        <div style={{
+          background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 12, padding: '0.5rem 1.2rem', textAlign: 'center', minWidth: 110,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, marginBottom: 2 }}>
+            <History size={13} color="var(--text-muted)" />
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
+              {t('lastScore')}
+            </span>
+          </div>
+          <span style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--text)' }}>
+            {lastScore > 0 ? lastScore : t('noScore')}
+          </span>
+        </div>
       </div>
     </div>
   );
