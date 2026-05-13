@@ -12,7 +12,9 @@ export default function Card({ card, isFlipped, isMatched, isDisabled, onClick }
     >
       <div className={`card-inner${flipped ? ' flipped' : ''}`}>
         {/* Back face */}
-        <div className="card-face card-back">?</div>
+        <div className="card-face card-back">
+          <img src="/logo.svg" alt="" draggable="false" />
+        </div>
         {/* Front face */}
         <div className="card-face card-front">
           <img src={card.img} alt={card.label} draggable="false" />

@@ -152,8 +152,8 @@ export default function GameScreen({ onWin, onLose, onMainMenu }) {
       {/* Card grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '1rem',
+        gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+        gap: '0.75rem',
         width: '100%',
         maxWidth: 680,
       }} className="px-2">

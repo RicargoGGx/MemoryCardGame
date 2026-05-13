@@ -74,29 +74,31 @@ body {
 
 /* ── Card ── */
 .card-scene {
-  width: 130px; height: 130px;
+  width: 100%; aspect-ratio: 1;
   perspective: 600px; cursor: pointer;
-}
-@media (min-width: 640px) {
-  .card-scene { width: 150px; height: 150px; }
 }
 .card-inner {
   width: 100%; height: 100%;
   position: relative;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
 }
 .card-inner.flipped { transform: rotateY(180deg); }
 .card-face {
   position: absolute; inset: 0;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 4px 20px rgba(0,0,0,0.35);
 }
 .card-back {
   background: linear-gradient(135deg,#1a2980,#26d0ce);
-  font-size: 3rem; color: #ffd700; font-weight: 900;
+}
+.card-back img {
+  width: 55%; height: 55%; object-fit: contain;
+  filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(255,215,0,0.45));
 }
 .card-front {
   background: linear-gradient(135deg, var(--card-f1), var(--card-f2));
