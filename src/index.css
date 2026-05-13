@@ -1,12 +1,52 @@
 @import "tailwindcss";
 @import "bootstrap/dist/css/bootstrap.min.css";
 
-/* Global CSS reset */
+/* ── Theme variables ── */
+:root,
+[data-theme="dark"] {
+  --bg:            #0d0b1e;
+  --bg-glow:       rgba(99,102,241,0.25);
+  --surface:       #1e1b4b;
+  --surface-2:     #312e81;
+  --topbar-bg:     rgba(13,11,30,0.85);
+  --text:          #ffffff;
+  --text-muted:    rgba(255,255,255,0.55);
+  --border:        rgba(255,255,255,0.18);
+  --card-f1:       #1e1b4b;
+  --card-f2:       #312e81;
+  --modal-1:       #1e1b4b;
+  --modal-2:       #312e81;
+  --modal-border:  rgba(255,215,0,0.4);
+  --logo-filter:   invert(1) drop-shadow(0 0 20px rgba(139,92,246,0.9));
+  --icon-filter:   invert(1);
+  --img-shadow:    drop-shadow(0 0 10px rgba(255,255,255,0.3));
+}
+
+[data-theme="light"] {
+  --bg:            #eef2ff;
+  --bg-glow:       rgba(99,102,241,0.12);
+  --surface:       #e0e7ff;
+  --surface-2:     #c7d2fe;
+  --topbar-bg:     rgba(224,231,255,0.92);
+  --text:          #1e1b4b;
+  --text-muted:    rgba(30,27,75,0.6);
+  --border:        rgba(30,27,75,0.18);
+  --card-f1:       #dde6ff;
+  --card-f2:       #bfcffe;
+  --modal-1:       #e0e7ff;
+  --modal-2:       #c7d2fe;
+  --modal-border:  rgba(99,102,241,0.45);
+  --logo-filter:   drop-shadow(0 0 16px rgba(99,102,241,0.5));
+  --icon-filter:   invert(0.15);
+  --img-shadow:    drop-shadow(0 0 8px rgba(99,102,241,0.5));
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
-  background: #0d0b1e;
-  color: #ffffff;
+  background: var(--bg);
+  color: var(--text);
   min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
 }
