@@ -4,7 +4,7 @@ A browser-based memory card game built with **React + Vite**, styled with **Tail
 
 ## 🚀 Live Demo
 
-> Deploy URL will go here (Vercel)
+👉 **[https://memory-card-game-ten-amber.vercel.app](https://memory-card-game-ten-amber.vercel.app)**
 
 ---
 
