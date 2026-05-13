@@ -18,10 +18,12 @@ export default function GameScreen({ onWin, onLose }) {
   const [score,   setScore]   = useState(0);
   const [modal,   setModal]   = useState(null);
 
-  const bgRef       = useRef(null);
-  const timeLeftRef = useRef(30);
-  const scoreRef    = useRef(0);
+  const bgRef         = useRef(null);
+  const timeLeftRef   = useRef(30);
+  const scoreRef      = useRef(0);
+  const tickingPlayed = useRef(false);
 
+  // ── Background music (only this respects mute) ──
   useEffect(() => {
     bgRef.current = new Audio('/background.mp3');
     bgRef.current.loop = true;
@@ -33,10 +35,14 @@ export default function GameScreen({ onWin, onLose }) {
     else        bgRef.current?.pause();
   }, [muted]);
 
+  // ── Timer ──
   const { timeLeft, start: startTimer } = useTimer(30, {
     onTick: (tick) => {
       timeLeftRef.current = tick;
-      playSFX('/ticking.mp3');
+      if (tick <= 10 && !tickingPlayed.current) {
+        tickingPlayed.current = true;
+        playSFX('/ticking.mp3');  // always plays, ignores mute
+      }
     },
     onExpire: () => {
       bgRef.current?.pause();
