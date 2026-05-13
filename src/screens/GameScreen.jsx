@@ -9,7 +9,7 @@ import { playSFX } from '../hooks/useSound';
 const TOTAL_PAIRS = 4;
 const scoreForMatch = (timeLeft) => 50 + timeLeft * 5;
 
-export default function GameScreen({ onWin, onLose }) {
+export default function GameScreen({ onWin, onLose, onMainMenu }) {
   const [muted,   setMuted]   = useState(true);
   const [deck]                = useState(() => buildDeck());
   const [flipped, setFlipped] = useState([]);
@@ -35,13 +35,19 @@ export default function GameScreen({ onWin, onLose }) {
     else        bgRef.current?.pause();
   }, [muted]);
 
+  // ── Exit ──
+  const handleExit = () => {
+    bgRef.current?.pause();
+    onMainMenu();
+  };
+
   // ── Timer ──
   const { timeLeft, start: startTimer } = useTimer(30, {
     onTick: (tick) => {
       timeLeftRef.current = tick;
       if (tick <= 10 && !tickingPlayed.current) {
         tickingPlayed.current = true;
-        playSFX('/ticking.mp3');  // always plays, ignores mute
+        playSFX('/ticking.mp3');
       }
     },
     onExpire: () => {
@@ -104,6 +110,21 @@ export default function GameScreen({ onWin, onLose }) {
   return (
     <div className="screen" style={{ padding: '1rem', gap: '1.2rem' }}>
       <div className="topbar">
+        <button
+          onClick={handleExit}
+          style={{
+            background: 'transparent',
+            border: '1px solid var(--border)',
+            color: 'var(--text)',
+            borderRadius: 8,
+            padding: '0.3rem 0.8rem',
+            cursor: 'pointer',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+          }}
+        >
+          ← Exit
+        </button>
         <span style={{ fontWeight: 700, fontSize: '1rem', color: '#fbbf24' }}>
           ⭐ {score} pts
         </span>
