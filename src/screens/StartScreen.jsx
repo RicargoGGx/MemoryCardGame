@@ -2,7 +2,7 @@ import { Globe, Sun, Moon, Play } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export default function StartScreen({ onStart }) {
-  const { t, lang, toggleLang, theme, toggleTheme } = useApp();
+  const { t, lang, setLang, theme, toggleTheme } = useApp();
 
   return (
     <div className="screen" style={{ gap: '2.5rem' }}>
@@ -15,10 +15,18 @@ export default function StartScreen({ onStart }) {
 
       {/* Settings bar — language + theme toggles */}
       <div className="settings-bar">
-        <button className="settings-btn" onClick={toggleLang}
-          title={lang === 'en' ? 'Switch to Spanish' : 'Cambiar a Inglés'}>
-          <Globe size={15} style={{ marginRight: 4 }} />{lang === 'en' ? 'ES' : 'EN'}
-        </button>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <Globe size={15} style={{ position: 'absolute', left: 10, pointerEvents: 'none', color: 'var(--text)' }} />
+          <select
+            className="settings-btn"
+            value={lang}
+            onChange={(e) => setLang(e.target.value)}
+            style={{ paddingLeft: 28, appearance: 'none', cursor: 'pointer' }}
+          >
+            <option value="en">EN</option>
+            <option value="es">ES</option>
+          </select>
+        </div>
         <button className="settings-btn" onClick={toggleTheme}
           title={theme === 'dark' ? 'Light mode' : 'Dark mode'}>
           {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}

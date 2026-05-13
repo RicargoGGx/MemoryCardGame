@@ -18,7 +18,7 @@ export function AppProvider({ children }) {
   const toggleTheme = () => setTheme((t) => t === 'dark' ? 'light' : 'dark');
 
   return (
-    <AppContext.Provider value={{ lang, theme, t, toggleLang, toggleTheme }}>
+    <AppContext.Provider value={{ lang, setLang, toggleLang, theme, toggleTheme, t }}>
       {children}
     </AppContext.Provider>
   );
