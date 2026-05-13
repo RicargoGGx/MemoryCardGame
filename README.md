@@ -12,7 +12,7 @@ A browser-based memory card game built with **React + Vite**, styled with **Tail
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/MemoryCardGame.git
+git clone https://github.com/RicargoGGx/MemoryCardGame.git
 cd MemoryCardGame
 
 # Install dependencies
@@ -48,8 +48,10 @@ npm run build
 | **React + Vite** | Fast HMR, minimal config, native ESM — ideal for a small interactive app. |
 | **Tailwind CSS v4 (Vite plugin)** | Utility-first with zero extra config; all custom design tokens live in CSS variables. |
 | **Bootstrap 5** | Used for responsive grid helpers and base button resets. |
+| **Lucide React** | Consistent, tree-shakeable icon set — replaces emoji/unicode characters for reliable cross-platform rendering. |
 | **CSS variables for theming** | `data-theme` on `<html>` switches the full dark/light palette with no JS overhead. |
 | **`playSFX` per call** | Creates a fresh `Audio` instance every invocation, eliminating the browser "interrupted" error that caused SFX to stop working after the first play. |
+| **Pre-loaded ticking ref** | The ticking audio is instantiated on mount and unlocked on first user gesture, working around mobile browser audio policy restrictions. |
 | **`callbacksRef` in `useTimer`** | Stores `onTick`/`onExpire` in a ref updated every render, preventing stale-closure bugs inside the `setInterval`. |
 | **React Context for i18n + theme** | Keeps language and theme state globally accessible without prop-drilling or a heavy library. |
 | **No state-management library** | Game state is simple enough for `useState` + the context above. No Redux/Zustand overhead. |
@@ -88,11 +90,14 @@ public/
 
 - **30-second countdown** with danger animation in the last 10 s
 - **Score system** — `50 + timeLeft × 5` pts per match, displayed live and on the result screen
+- **Best & last score** — persisted in `localStorage`, shown on the start screen
 - **Background music** toggleable at any time (mute button); SFX always play
-- **Ticking sound** fires automatically at 10 s remaining
+- **Ticking sound** fires every second from 10 s remaining, works on mobile
 - **Exit button** in-game returns to main menu at any point
 - **Bilingual (EN / ES)** — toggle on the start screen, all UI strings update instantly
 - **Dark / Light theme** — full palette swap via CSS variables, toggle on the start screen
-- **Responsive grid** — 4-column card layout works on mobile and desktop
-- **Keyboard accessible** — cards focusable and flippable via Enter
-- **Bounce animation** on buttons — extended hover hitbox prevents the flicker bug
+- **Responsive grid** — 2-column mobile / 4-column desktop card layout, no scroll
+- **Keyboard accessible** — cards focusable and flippable via Enter key
+- **Descriptive `aria-label`** on every card — reflects face-down, face-up, and matched states
+- **`prefers-reduced-motion`** — flip, bounce, and shake animations are disabled for users who opt out via OS accessibility settings
+- **Bounce animation** on buttons — inner-span technique prevents hover hitbox flicker
