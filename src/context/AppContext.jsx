@@ -1,16 +1,24 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { translations } from '../i18n';
 
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
-  const [lang, setLang] = useState('en');
+  const [lang,  setLang]  = useState('en');
+  const [theme, setTheme] = useState('dark');
 
-  const t = (key) => key;
+  // Apply theme to <html> so CSS variables cascade everywhere
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
-  const toggleLang = () => setLang((l) => l === 'en' ? 'es' : 'en');
+  const t = (key) => translations[lang]?.[key] ?? key;
+
+  const toggleLang  = () => setLang( (l) => l === 'en' ? 'es' : 'en');
+  const toggleTheme = () => setTheme((t) => t === 'dark' ? 'light' : 'dark');
 
   return (
-    <AppContext.Provider value={{ lang, t, toggleLang }}>
+    <AppContext.Provider value={{ lang, theme, t, toggleLang, toggleTheme }}>
       {children}
     </AppContext.Provider>
   );
