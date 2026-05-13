@@ -1,4 +1,8 @@
+import { useApp } from '../context/AppContext';
+
 export default function StartScreen({ onStart }) {
+  const { t, lang, toggleLang, theme, toggleTheme } = useApp();
+
   return (
     <div className="screen" style={{ gap: '2.5rem' }}>
       {/* Background glow */}
@@ -7,6 +11,18 @@ export default function StartScreen({ onStart }) {
         background: `radial-gradient(ellipse at 50% 0%, var(--bg-glow) 0%, transparent 70%)`,
         zIndex: 0,
       }} />
+
+      {/* Settings bar — language + theme toggles */}
+      <div className="settings-bar">
+        <button className="settings-btn" onClick={toggleLang}
+          title={lang === 'en' ? 'Switch to Spanish' : 'Cambiar a Inglés'}>
+          🌐 {lang === 'en' ? 'ES' : 'EN'}
+        </button>
+        <button className="settings-btn" onClick={toggleTheme}
+          title={theme === 'dark' ? 'Light mode' : 'Dark mode'}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+      </div>
 
       {/* Logo + title – slides in from top */}
       <div className="slide-down" style={{
@@ -22,10 +38,10 @@ export default function StartScreen({ onStart }) {
           fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 800,
           letterSpacing: 2, margin: 0, color: 'var(--text)',
         }}>
-          Memory Card Game
+          {t('title')}
         </h1>
         <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>
-          Can you find all the pairs?
+          {t('subtitle')}
         </p>
       </div>
 
@@ -44,7 +60,7 @@ export default function StartScreen({ onStart }) {
             cursor: 'pointer',
           }}
         >
-          ▶ Start Game
+          {t('startBtn')}
         </button>
       </div>
     </div>
