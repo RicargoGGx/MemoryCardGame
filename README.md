@@ -97,7 +97,6 @@ public/
 - **Bilingual (EN / ES)** — toggle on the start screen, all UI strings update instantly
 - **Dark / Light theme** — full palette swap via CSS variables, toggle on the start screen
 - **Responsive grid** — 2-column mobile / 4-column desktop card layout, no scroll
-- **Keyboard accessible** — cards focusable and flippable via Enter key
 - **Descriptive `aria-label`** on every card — reflects face-down, face-up, and matched states
 - **`prefers-reduced-motion`** — flip, bounce, and shake animations are disabled for users who opt out via OS accessibility settings
 - **Bounce animation** on buttons — inner-span technique prevents hover hitbox flicker
